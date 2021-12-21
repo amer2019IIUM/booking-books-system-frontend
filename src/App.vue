@@ -1,16 +1,15 @@
 <template>
   <div>
     <navbar />
-    <home></home>
+    <router-view />
   </div>
 </template>
 
 <script>
 import Navbar from "./layout/Navbar.vue";
-import Home from "./pages/Home.vue";
 export default {
   name: "App",
-  components: { Home, Navbar },
+  components: { Navbar },
 };
 </script>
 
@@ -26,5 +25,7 @@ export default {
 }
 .borderColor {
   border-color: #6e50ca !important;
+  color: #6e50ca !important;
+  color: #6e50ca !important;
 }
 </style>
