@@ -22,7 +22,7 @@
                 <div class="form-group">
                   <label>Author</label>
                   <input
-                    v-model="bookData.book_author"
+                    v-model="bookData.author"
                     type="text"
                     class="form-control ml-sm-2 mr-sm-4 my-2"
                     required
@@ -33,14 +33,49 @@
                 <div class="form-group">
                   <label>Book Cover Image</label>
                   <input
-                    v-model="bookData.book_cover"
+                    v-model="bookData.image"
                     type="text"
                     class="form-control ml-sm-2 mr-sm-4 my-2"
                     required
                   />
                 </div>
               </div>
-              <div class="col-12">
+              <div class="col-6">
+                <div class="form-group">
+                  <label>Language</label>
+                  <select
+                    class="form-select"
+                    aria-label="Default select example"
+                    v-model="bookData.lang"
+                    required
+                  >
+                    <option value="">Choose</option>
+                    <option value="ar">Arabic</option>
+                    <option value="en">English</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  <label>category</label>
+                  <select
+                    class="form-select"
+                    aria-label="Default select example"
+                    v-model="bookData.category_id"
+                    required
+                  >
+                    <template
+                      v-for="(category, index) in categories"
+                      :key="index"
+                    >
+                      <option :value="category.id">
+                        {{ category.category_name }}
+                      </option>
+                    </template>
+                  </select>
+                </div>
+              </div>
+              <div class="col-22">
                 <div class="form-group">
                   <label>Description</label>
                   <textarea
@@ -76,6 +111,8 @@
               <tr>
                 <th scope="col">Book ID</th>
                 <th>Book Name</th>
+                <th>Book description</th>
+                <th>Image Link</th>
                 <th>Is Booked</th>
                 <th>Action</th>
               </tr>
@@ -90,7 +127,20 @@
                     <input v-model="editBookData.book_name" type="text" />
                   </td>
                   <td>
-                    <input v-model="editBookData.is_booked" type="text" />
+                    <input v-model="editBookData.book_desc" type="text" />
+                  </td>
+                  <td>
+                    <input v-model="editBookData.image" type="text" />
+                  </td>
+                  <td>
+                    <select
+                      class="form-select"
+                      aria-label="Default select example"
+                      v-model="editBookData.is_booked"
+                    >
+                      <option value="1">true</option>
+                      <option value="null">false</option>
+                    </select>
                   </td>
                   <td>
                     <span class="icon">
@@ -138,6 +188,12 @@
                     {{ book.book_name }}
                   </td>
                   <td>
+                    {{ book.book_desc }}
+                  </td>
+                  <td>
+                    {{ book.image }}
+                  </td>
+                  <td>
                     {{ book.is_booked }}
                   </td>
                   <td>
@@ -183,101 +239,74 @@
 </template>
 
 <script>
-// import db from "@/db";
+import { mapGetters } from "vuex";
+
 export default {
   name: "Books",
   data() {
     return {
       editId: "",
       bookData: {
-        id: "",
         book_name: "",
-        book_author: "",
-        book_cover: "",
+        author: "",
+        image: "",
         book_desc: "",
+        lang: "",
         is_booked: null,
+        user_id: null,
+        category_id: null,
       },
       editBookData: {
         id: "",
         book_name: "",
-        book_author: "",
-        book_cover: "",
+        author: "",
+        image: "",
         book_desc: "",
         is_booked: null,
       },
-      books: [
-        {
-          id: "1",
-          book_name: "Book Two",
-          book_author: "",
-          book_cover: "",
-          book_desc: "",
-          is_booked: null,
-        },
-        {
-          id: "2",
-          book_name: "Book two",
-          book_author: "",
-          book_cover: "",
-          book_desc: "",
-          is_booked: null,
-        },
-      ],
+      booksData: [],
     };
   },
-  created() {
-    // this.getBooks();
-  },
   computed: {
-    // sortedBooks() {
-    //   return this.books.slice().sort((a, b) => {
-    //     return a.id - b.id;
-    //   });
-    // },
+    ...mapGetters({
+      books: "Book/bookData",
+      categories: "Category/categoryData",
+    }),
   },
+
   methods: {
-    getBooks() {
-      //   db.collection("books")
-      //     .get()
-      //     .then((querySnapshot) => {
-      //       const books = [];
-      //       // querySnapshot.forEach((doc)=>{
-      //       //   books.push(doc.data())
-      //       // })
-      //       const booksArray = [];
-      //       let i = 0;
-      //       querySnapshot.forEach((doc) => {
-      //         booksArray.push(doc.data());
-      //         booksArray[i].id = doc.id;
-      //         booksArray.push(booksArray[i]);
-      //         i++;
-      //       });
-      //   this.books = books;
-      // });
-    },
-    onSubmit() {
-      console.log(this.bookData.book_name);
-      //   db.collection("books").add(this.bookData).then(this.getBooks);
-      //   this.bookData.id = "";
-      //   this.bookData.book_name = "";
-      //   this.bookData.is_booked = "";
+    async onSubmit() {
+      await this.axios
+        .post("http://localhost:8000/api/books/", this.bookData)
+        .then(() => {
+          alert("Book has been Added!");
+          this.$router.go();
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     },
 
     // eslint-disable-next-line no-unused-vars
     onDelete(id) {
       console.log(id);
-      //   db.collection("books")
-      //     .doc(id)
-      //     .delete()
-      // eslint-disable-next-line no-unused-vars
-      // .then((data) => {
-      //   this.getBooks();
-      // });
+      this.axios
+        .delete("http://localhost:8000/api/books/" + id)
+        .then(() => {
+          alert("Delete it!");
+          this.$router.go();
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     },
     onEdit(book) {
       this.editId = book.id;
       this.editBookData.id = book.id;
       this.editBookData.book_name = book.book_name;
+      this.editBookData.author = book.author;
+      this.editBookData.book_desc = book.book_desc;
+      this.editBookData.image = book.image;
       this.editBookData.is_booked = book.is_booked;
       console.log(book.book_name);
     },
@@ -289,14 +318,15 @@ export default {
     },
     // eslint-disable-next-line no-unused-vars
     onEditSubmit(id) {
-      //   db.collection("books")
-      //     .doc(id)
-      //     .set(this.editBookData)
-      //     .then(this.getBooks);
-      //   this.editId = "";
-      //   this.editBookData.id = "";
-      //   this.editBookData.book_name = "";
-      //   this.editBookData.is_booked = "";
+      this.axios
+        .put("http://localhost:8000/api/books/" + id, this.editBookData)
+        .then(() => {
+          alert("Edited!");
+          this.$router.go();
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     },
   },
 };

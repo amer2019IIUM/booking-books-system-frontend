@@ -23,6 +23,7 @@ export default {
   methods: {
     ...mapActions({
       setBooks: "Book/getBookData",
+      setCategories: "Category/getCategoryData",
     }),
 
     initializeBooksData() {
@@ -38,10 +39,23 @@ export default {
         });
       // this.setBooks(["asdasd"]);
     },
+    initializeCategoriesData() {
+      this.hi = "hello";
+      console.log("hi");
+      this.axios
+        .get("http://localhost:8000/api/categories/")
+        .then((res) => {
+          this.setCategories(res.data.data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
   },
   mounted() {
     this.$nextTick(function () {
       this.initializeBooksData();
+      this.initializeCategoriesData();
     });
   },
 };
