@@ -3,15 +3,22 @@
     <nav class="navbar navbar-light primaryBackgroundColor mb-5">
       <div class="container-fluid m-3">
         <a class="navbar-brand" href="#">
-          <!-- <img
-            src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/64/000000/external-book-interface-kiranshastry-lineal-kiranshastry.png"
-            alt=""
-            width="30"
-            height="24"
-            class="d-inline-block align-text-top mr-3"
-          /> -->
-          <span class="secondaryColor">Booking System</span>
+          <router-link style="text-decoration: none" :to="{ name: 'Home' }">
+            <span class="secondaryColor">Booking System</span>
+          </router-link>
         </a>
+        <div class="d-flex">
+          <router-link style="text-decoration: none" :to="{ name: 'Login' }">
+            <button type="button" class="btn btn-outline-light m-1">
+              Login
+            </button>
+          </router-link>
+          <router-link style="text-decoration: none" :to="{ name: 'Signup' }">
+            <button type="button" class="btn btn-outline-light m-1">
+              Register
+            </button>
+          </router-link>
+        </div>
       </div>
     </nav>
   </div>

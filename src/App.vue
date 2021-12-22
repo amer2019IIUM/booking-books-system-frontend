@@ -2,14 +2,17 @@
   <div>
     <navbar />
     <router-view />
+    <!-- <Footer /> -->
   </div>
 </template>
 
 <script>
 import Navbar from "./layout/Navbar.vue";
+import Footer from "./layout/Footer.vue";
 export default {
   name: "App",
-  components: { Navbar },
+  // eslint-disable-next-line vue/no-unused-components
+  components: { Navbar, Footer },
 };
 </script>
 
