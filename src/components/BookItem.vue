@@ -1,7 +1,7 @@
 <template>
-  <div class="card" style="width: 15rem">
+  <div class="card" style="width: 15rem; height: 30rem">
     <img
-      src="https://heroesfootball.com/wp-content/uploads/2019/05/salah.jpg"
+      :src="book.image"
       class="card-img-top"
       style="width: 15rem; height: 15rem"
       alt="..."
@@ -10,19 +10,18 @@
       <router-link
         class="primaryColor"
         style="text-decoration: none"
-        :to="{ name: 'ShowBook', params: { id: '123' } }"
+        :to="{ name: 'ShowBook', params: { id: book.id } }"
       >
-        <h5 class="card-title">Mohd Saleh Book</h5>
+        <h5 class="card-title overflowText">{{ book.book_name }}</h5>
       </router-link>
       <h6 class="card-subtitle mb-2 text-muted"><b>Author</b>:Amer</h6>
 
-      <p class="card-text">
-        Some quick example text to build on the card title and make up the bulk
-        of the card's content.
+      <p class="card-text overflowText">
+        {{ book.book_desc }}
       </p>
     </div>
     <div class="card-body text-center">
-      <router-link :to="{ name: 'ShowBook', params: { id: '123' } }">
+      <router-link :to="{ name: 'ShowBook', params: { id: book.id } }">
         <button
           type="button"
           class="btn btn-outline-primaryColor borderColor primaryColor"
@@ -37,6 +36,7 @@
 <script>
 export default {
   name: "BookItem",
+  props: ["book"],
   data() {
     return {
       id: 1,
@@ -45,4 +45,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.overflowText {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+</style>

@@ -3,14 +3,18 @@ import Home from '../pages/Home.vue'
 import ShowBook from '../pages/ShowBook.vue'
 import Login from '../pages/auth/Login.vue'
 import Signup from '../pages/auth/Signup.vue'
-
+import Dashboard from '../pages/dashboard/Dashboard.vue'
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home
   },
-
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: Dashboard
+  },
   {
     path: '/book/:id',
     name: 'ShowBook',
