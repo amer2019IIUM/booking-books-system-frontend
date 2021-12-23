@@ -275,8 +275,8 @@ export default {
   },
 
   methods: {
-    async onSubmit() {
-      await this.axios
+    onSubmit() {
+      this.axios
         .post("http://localhost:8000/api/books/", this.bookData)
         .then(() => {
           alert("Book has been Added!");

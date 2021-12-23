@@ -10,6 +10,7 @@ import { mapActions } from "vuex";
 import Navbar from "./layout/Navbar.vue";
 import Footer from "./layout/Footer.vue";
 import Dashboard from "./pages/dashboard/Dashboard.vue";
+
 export default {
   name: "App",
   // eslint-disable-next-line vue/no-unused-components
@@ -24,6 +25,7 @@ export default {
     ...mapActions({
       setBooks: "Book/getBookData",
       setCategories: "Category/getCategoryData",
+      currentUser: "Auth/currentUser",
     }),
 
     initializeBooksData() {
@@ -51,9 +53,28 @@ export default {
           console.error(err);
         });
     },
+
+    ///Get the current User data if authenticated
+    async initializeProfile() {
+      let token = await localStorage.getItem("myapptoken");
+      this.axios
+        .get("http://localhost:8000/api/profile/", {
+          headers: {
+            "Content-Type": "application/json",
+            authorization: token,
+          },
+        })
+        .then((res) => {
+          this.currentUser(res.data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
   },
   mounted() {
     this.$nextTick(function () {
+      this.initializeProfile();
       this.initializeBooksData();
       this.initializeCategoriesData();
     });

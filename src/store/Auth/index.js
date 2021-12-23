@@ -2,18 +2,20 @@
 const state = {
     authStatus: false,
     authenticatedUserId: null,
-    token: localStorage.getItem("apollo-token") || null
+    user: null,
+    token: localStorage.getItem("myapptoken") || null
 };
 
 const getters = {
     authenticatedUserId: state => state.authenticatedUserId,
     authStatus: state => state.authStatus,
+    user: state => state.user,
 };
 
 const actions = {
     async login({ commit }, token) {
         commit('LOGIN', token);
-        await localStorage.setItem('apollo-token', "Bearer " + token)
+        await localStorage.setItem('myapptoken', "Bearer " + token)
         window.location.reload()
     },
     async currentUser({ commit }, userData) {
@@ -38,7 +40,8 @@ const actions = {
 };
 const mutations = {
     CURRENT_USER(state, payload) {
-        state.authenticatedUserId = payload;
+        state.authenticatedUserId = payload.user.id;
+        state.user = payload.user;
     },
     IS_AUTH(state,) {
         state.authStatus = true

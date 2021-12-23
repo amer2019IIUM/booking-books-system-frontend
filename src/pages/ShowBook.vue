@@ -39,7 +39,7 @@
                 class="btn btn-outline-primaryColor borderColor primaryColor"
                 v-if="book.is_booked == true"
               >
-                Already Booked
+                Booked
               </button>
             </div>
           </div>

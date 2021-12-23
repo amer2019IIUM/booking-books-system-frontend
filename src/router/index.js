@@ -4,6 +4,7 @@ import ShowBook from '../pages/ShowBook.vue'
 import Login from '../pages/auth/Login.vue'
 import Signup from '../pages/auth/Signup.vue'
 import Dashboard from '../pages/dashboard/Dashboard.vue'
+import UserProfile from '../pages/UserProfile.vue'
 const routes = [
   {
     path: '/',
@@ -14,6 +15,11 @@ const routes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: Dashboard
+  },
+  {
+    path: '/profile/:id',
+    name: 'UserProfile',
+    component: UserProfile
   },
   {
     path: '/book/:id',

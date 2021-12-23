@@ -11,7 +11,7 @@
             />
           </div>
           <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-            <form>
+            <form class="form-inline" v-on:submit.prevent="onSubmit">
               <div
                 class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start"
               >
@@ -97,7 +97,7 @@
 
               <div class="text-center text-lg-start mt-4 pt-2">
                 <button
-                  type="button"
+                  type="submit"
                   style="padding-left: 2.5rem; padding-right: 2.5rem"
                   class="btn btn-outline-primaryColor borderColor primaryColor"
                 >
@@ -113,6 +113,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   data() {
     return {
@@ -125,6 +127,33 @@ export default {
         lng: "",
       },
     };
+  },
+  methods: {
+    ...mapActions({
+      login: "Auth/login",
+    }),
+
+    onSubmit() {
+      this.axios
+        .post("http://localhost:8000/api/register/", this.formData)
+        .then(() => {
+          this.axios
+            .post("http://localhost:8000/api/login/", {
+              email: this.formData.email,
+              password: this.formData.password,
+            })
+            .then((res) => {
+              this.login(res.data.token);
+              this.$router.go();
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
   },
 };
 </script>
