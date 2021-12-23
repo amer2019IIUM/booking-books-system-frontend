@@ -25,12 +25,11 @@ export default {
     ...mapActions({
       setBooks: "Book/getBookData",
       setCategories: "Category/getCategoryData",
+      setUsers: "User/getUserData",
       currentUser: "Auth/currentUser",
     }),
 
     initializeBooksData() {
-      this.hi = "hello";
-      console.log("hi");
       this.axios
         .get("http://localhost:8000/api/books/")
         .then((res) => {
@@ -42,12 +41,27 @@ export default {
       // this.setBooks(["asdasd"]);
     },
     initializeCategoriesData() {
-      this.hi = "hello";
-      console.log("hi");
       this.axios
         .get("http://localhost:8000/api/categories/")
         .then((res) => {
           this.setCategories(res.data.data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+
+    async initializeUsersData() {
+      let token = await localStorage.getItem("myapptoken");
+      this.axios
+        .get("http://localhost:8000/api/users/", {
+          headers: {
+            "Content-Type": "application/json",
+            authorization: token,
+          },
+        })
+        .then((res) => {
+          this.setUsers(res.data.data);
         })
         .catch((err) => {
           console.error(err);
@@ -77,6 +91,7 @@ export default {
       this.initializeProfile();
       this.initializeBooksData();
       this.initializeCategoriesData();
+      this.initializeUsersData();
     });
   },
 };

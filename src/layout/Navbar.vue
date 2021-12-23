@@ -38,6 +38,20 @@
               Your Profile
             </button>
           </router-link>
+
+          <div v-if="user">
+            <router-link
+              style="text-decoration: none"
+              :to="{
+                name: 'Dashboard',
+              }"
+              v-if="user.is_admin"
+            >
+              <button type="button" class="btn btn-outline-light m-1">
+                Dashboard
+              </button>
+            </router-link>
+          </div>
         </div>
       </div>
     </nav>
@@ -53,6 +67,7 @@ export default {
   computed: {
     ...mapGetters({
       authenticatedUserId: "Auth/authenticatedUserId",
+      user: "Auth/user",
     }),
   },
 };

@@ -11,7 +11,7 @@
             />
           </div>
           <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-            <form>
+            <form class="form-inline" v-on:submit.prevent="onSubmit">
               <div
                 class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start"
               >
@@ -23,10 +23,12 @@
               <!-- Email input -->
               <div class="form-outline mb-4">
                 <input
+                  v-model="formData.email"
                   type="email"
                   id="form3Example3"
                   class="form-control form-control-lg"
                   placeholder="Enter a valid email address"
+                  required
                 />
                 <label class="form-label" for="form3Example3"
                   >Email address</label
@@ -37,9 +39,11 @@
               <div class="form-outline mb-3">
                 <input
                   type="password"
+                  v-model="formData.password"
                   id="form3Example4"
                   class="form-control form-control-lg"
                   placeholder="Enter password"
+                  required
                 />
                 <label class="form-label" for="form3Example4">Password</label>
               </div>
@@ -50,7 +54,7 @@
 
               <div class="text-center text-lg-start mt-4 pt-2">
                 <button
-                  type="button"
+                  type="submit"
                   style="padding-left: 2.5rem; padding-right: 2.5rem"
                   class="btn btn-outline-primaryColor borderColor primaryColor"
                 >
@@ -65,6 +69,40 @@
   </div>
 </template>
 
+<script>
+import { mapActions } from "vuex";
+
+export default {
+  data() {
+    return {
+      formData: {
+        email: "",
+        password: "",
+      },
+    };
+  },
+  methods: {
+    onSubmit() {
+      console.log("hi");
+      this.axios
+        .post("http://localhost:8000/api/login/", {
+          email: this.formData.email,
+          password: this.formData.password,
+        })
+        .then((res) => {
+          this.login(res.data.token);
+          this.$router.go();
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+    ...mapActions({
+      login: "Auth/login",
+    }),
+  },
+};
+</script>
 <style scoped>
 .divider:after,
 .divider:before {

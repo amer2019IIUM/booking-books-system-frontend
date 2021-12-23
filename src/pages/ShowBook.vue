@@ -24,7 +24,7 @@
             <p class="card-text">
               {{ book.book_desc }}
             </p>
-            <div class="card-body text-center">
+            <div class="card-body text-center" v-if="authenticatedUserId">
               <button
                 v-if="book.is_booked == null"
                 @click="bookBook(book.id)"
@@ -42,6 +42,22 @@
                 Booked
               </button>
             </div>
+            <div
+              class="card-body text-center"
+              v-if="authenticatedUserId == null"
+            >
+              <router-link
+                style="text-decoration: none"
+                :to="{ name: 'Login' }"
+              >
+                <button
+                  type="button"
+                  class="btn btn-outline-primaryColor borderColor primaryColor"
+                >
+                  Book
+                </button>
+              </router-link>
+            </div>
           </div>
         </div>
       </div>
@@ -50,6 +66,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "ShowBook",
   data() {
@@ -76,6 +93,7 @@ export default {
         });
     },
     bookBook() {
+      this.bookBookData.user_id = this.authenticatedUserId;
       this.axios
         .put(
           "http://localhost:8000/api/books/" + this.$route.params.id,
@@ -94,6 +112,12 @@ export default {
     this.$nextTick(function () {
       this.initializeBook();
     });
+  },
+  computed: {
+    ...mapGetters({
+      authenticatedUserId: "Auth/authenticatedUserId",
+      user: "Auth/user",
+    }),
   },
 };
 </script>
