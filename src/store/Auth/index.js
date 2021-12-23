@@ -22,10 +22,10 @@ const actions = {
         await commit('CURRENT_USER', userData);
         if (userData) {
             commit('IS_AUTH');
-            await localStorage.setItem('authStatus', true)
+            localStorage.setItem('authStatus', true)
         }
         else {
-            await localStorage.setItem('authStatus', false)
+            localStorage.setItem('authStatus', false)
 
         }
     },

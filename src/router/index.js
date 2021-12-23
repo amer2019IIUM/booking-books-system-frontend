@@ -14,12 +14,18 @@ const routes = [
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: Dashboard
+    component: Dashboard,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/profile/:id',
     name: 'UserProfile',
-    component: UserProfile
+    component: UserProfile,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/book/:id',
@@ -42,4 +48,27 @@ const router = createRouter({
   history: createWebHistory(),
   routes
 });
+
+
+// eslint-disable-next-line no-unused-vars
+
+
+////Authentication Route validations
+router.beforeEach((to, from, next) => {
+  let isAuth = localStorage.getItem("authStatus");
+  // eslint-disable-next-line no-console
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (isAuth !== "true") {
+      next({
+        name: "Login"
+      });
+    }
+    else {
+      next();
+    }
+  }
+  else {
+    next();
+  }
+})
 export default router;

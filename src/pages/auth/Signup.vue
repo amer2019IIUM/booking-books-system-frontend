@@ -113,7 +113,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   data() {
@@ -127,6 +127,15 @@ export default {
         lng: "",
       },
     };
+  },
+  computed: {
+    ...mapGetters({
+      authenticatedUserId: "Auth/authenticatedUserId",
+    }),
+  },
+
+  created() {
+    this.checkAuth();
   },
   methods: {
     ...mapActions({
@@ -153,6 +162,17 @@ export default {
         .catch((err) => {
           console.error(err);
         });
+    },
+    checkAuth() {
+      console.log(this.authenticatedUserId);
+      if (this.authenticatedUserId == null) {
+        return;
+      } else {
+        this.$router
+          .push({ path: "/" })
+          .then(() => {})
+          .catch(() => {});
+      }
     },
   },
 };

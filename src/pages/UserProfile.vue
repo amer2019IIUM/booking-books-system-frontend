@@ -87,6 +87,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+// import { onMounted } from "vue";
 
 export default {
   //   isLoading: true,
@@ -101,13 +102,22 @@ export default {
       },
     };
   },
+  created() {
+    if (this.user == null) {
+      return;
+    }
+    this.formData.email = this.user.email;
+    this.formData.address = this.user.address;
+    this.formData.lat = this.user.lat;
+    this.formData.lng = this.user.lng;
+  },
   methods: {
     async onSubmit() {
       let token = await localStorage.getItem("myapptoken");
 
       this.axios
         .put(
-          "http://localhost:8000/api/users/1" + this.$route.params.id,
+          "http://localhost:8000/api/users/" + this.$route.params.id,
           this.formData,
           {
             headers: {
@@ -116,8 +126,9 @@ export default {
             },
           }
         )
-        .then((res) => {
-          console.log(res);
+      .then(() => {
+          alert("Updated!");
+          this.$router.go();
         })
         .catch((err) => {
           console.error(err);
@@ -128,11 +139,6 @@ export default {
     ...mapGetters({
       user: "Auth/user",
     }),
-  },
-  updated() {
-    this.$nextTick(function () {
-      this.formData = this.user;
-    });
   },
 };
 </script>

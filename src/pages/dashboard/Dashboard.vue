@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="user.is_admin">
     <ul class="nav justify-content-center">
       <li class="nav-item">
         <button
@@ -40,12 +40,19 @@
 import BooksManage from "../../components/BooksManage.vue";
 import UsersManage from "../../components/UsersManage.vue";
 import CategoryManage from "../../components/CategoryManage.vue";
+import { mapGetters } from "vuex";
+
 export default {
   components: { BooksManage, UsersManage, CategoryManage },
   data() {
     return {
       switchComponent: true,
     };
+  },
+  computed: {
+    ...mapGetters({
+      user: "Auth/user",
+    }),
   },
 };
 </script>

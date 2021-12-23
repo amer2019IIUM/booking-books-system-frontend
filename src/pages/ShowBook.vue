@@ -93,6 +93,9 @@ export default {
         });
     },
     bookBook() {
+      if (this.countUserBooks >= 2) {
+        return alert("You reached Max number of booking");
+      }
       this.bookBookData.user_id = this.authenticatedUserId;
       this.axios
         .put(
@@ -117,6 +120,7 @@ export default {
     ...mapGetters({
       authenticatedUserId: "Auth/authenticatedUserId",
       user: "Auth/user",
+      countUserBooks: "User/userBooks",
     }),
   },
 };
